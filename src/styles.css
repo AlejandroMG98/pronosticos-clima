@@ -1,0 +1,43 @@
+/* Variables Globales de Colores */
+:root {
+  /* Colores principales */
+  --primary-color: #5746af;
+  --primary-light: #667eea;
+  --primary-dark: #764ba2;
+  
+  /* Colores de fondo */
+  --bg-gradient-start: #667eea;
+  --bg-gradient-end: #764ba2;
+  --bg-white: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-lighter: #e9ecef;
+  --bg-dark: #495057;
+  
+  /* Colores de texto */
+  --text-dark: #495057;
+  --text-muted: #6c757d;
+  --text-light: #ecf0f1;
+  --text-white: #ffffff;
+  
+  /* Bordes */
+  --border-color: #dee2e6;
+  --border-light: #e9ecef;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 15px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}

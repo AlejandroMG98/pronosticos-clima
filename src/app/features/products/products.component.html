@@ -1,0 +1,37 @@
+<div class="container py-5">
+      <h1 class="mb-4 text-white">Catálogo de Productos</h1>
+
+      <button class="btn btn-primary mb-3" (click)="addProductTab()" [disabled]="disabled()">
+        <i class="bi bi-plus-circle"></i> Agregar Producto
+      </button>
+      
+      <small class="d-block mb-3 text-white" *ngIf="helpMessage()">
+        {{ helpMessage() }}
+      </small>
+
+      <!-- Componente de Tabs -->
+      <app-tabs 
+        [tabs]="productTabs()" 
+        (tabClosed)="onTabClosed($event)"
+       >
+        
+        <!-- Contenido de cada pestaña -->
+        <div *ngFor="let tab of productTabs()">
+          <div *ngIf="tab.active" class="card mt-3">
+            <div class="card-body">
+              <h3>{{ getProductById(tab.id)?.name }}</h3>
+              <p class="text-muted">{{ getProductById(tab.id)?.category }}</p>
+              <p>{{ getProductById(tab.id)?.description }}</p>
+              <h4 class="text-success">{{ getProductById(tab.id)?.price }}</h4>
+              <span class="badge bg-info">Stock: {{ getProductById(tab.id)?.stock }}</span>
+            </div>
+          </div>
+        </div>
+      </app-tabs>
+
+      <!-- Contenido vacío -->
+      <div class="alert alert-light mt-3 text-center" *ngIf="productTabs().length === 0">
+        <i class="bi bi-inbox display-4 d-block mb-3"></i>
+        No hay productos. Haz clic en "Agregar Producto" para comenzar.
+      </div>
+    </div> 

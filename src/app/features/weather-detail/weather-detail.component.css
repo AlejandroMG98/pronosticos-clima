@@ -1,0 +1,104 @@
+/* Container principal */
+.weather-detail-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+}
+
+/* Iconos */
+.weather-icon-large {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+.weather-icon-medium {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* Efectos al pasar el cursor */
+.forecast-card .card:hover {
+  transform: translateY(-10px);
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .weather-icon-large {
+    width: 100px;
+    height: 100px;
+  }
+
+  .display-2 {
+    font-size: 3rem;
+  }
+
+  .forecast-card {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .weather-stats {
+    gap: var(--spacing-sm);
+  }
+
+  .stat-item {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .temperature-range {
+    font-size: 1rem;
+  }
+
+  .stat-content p {
+    font-size: 1rem;
+  }
+
+  .forecast-details {
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Animaciones */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.current-weather-card {
+  animation: slideInUp 0.5s ease;
+}
+
+.forecast-card {
+  animation: slideInUp 0.6s ease;
+}
+
+.forecast-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.forecast-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.forecast-card:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.forecast-card:nth-child(5) {
+  animation-delay: 0.4s;
+}

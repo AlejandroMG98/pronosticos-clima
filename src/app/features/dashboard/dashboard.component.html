@@ -1,0 +1,200 @@
+<div class="dashboard-container">
+
+  <div class="bg-white text-center py-5 mb-4 rounded-bottom shadow">
+    <div class="container">
+      <h1 class="display-4 fw-bold text-primary mb-3">
+        <i class="bi bi-cloud-sun"></i> Pronóstico del Tiempo
+      </h1>
+      <p class="lead text-muted">
+        Consulta el clima actual y pronóstico a 5 días para cualquier ubicación en EE.UU.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+  
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <form (ngSubmit)="addLocation()">
+          <div class="row justify-content-center">
+            <div class="col-lg-6 col-xl-6">
+              <h2 class="h5 mb-3">Agregar Nueva Ubicación</h2>
+              
+              <div class="input-group mb-2">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Código postal (ej: 10001)"
+                  [value]="newZipCode()"
+                  (input)="newZipCode.set($any($event.target).value)"
+                  [disabled]="isLoading()"
+                  maxlength="5"
+                  aria-label="Código postal"
+                  required>
+                
+                <button 
+                  class="btn btn-primary" 
+                  type="submit"
+                  [disabled]="isLoading() || !newZipCode()">
+                  <span *ngIf="!isLoading()">
+                    <i class="bi bi-plus-circle"></i> Agregar
+                  </span>
+                  <span *ngIf="isLoading()">
+                    <span class="spinner-border spinner-border-sm me-1"></span>
+                    Cargando...
+                  </span>
+                </button>
+              </div>
+              
+              <small class="text-muted">
+                <i class="bi bi-info-circle"></i> 
+                Ingresa un código postal de 5 dígitos de EE.UU.
+              </small>
+              
+              <!-- Mensaje de error -->
+              <div *ngIf="errorMessage()" class="alert alert-danger py-2 mt-3" role="alert">
+                <small>{{ errorMessage() }}</small>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Componente de tabs con ubicaciones -->
+    <div *ngIf="tabs().length > 0; else noLocations">
+      <app-tabs 
+        [tabs]="tabs()" 
+        (tabClosed)="onTabClosed($event)"
+      >
+        
+        <!-- Contenido de cada pestaña -->
+        <div *ngFor="let tab of tabs()">
+          <div *ngIf="tab.active">
+            <div *ngIf="getWeatherForTab(tab.id); else loadingWeather">
+              <div class="card shadow-lg">
+                <div class="card-body p-4">
+                  <!-- Header de la ubicación -->
+                  <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                      <h3 class="mb-1">{{ getWeatherForTab(tab.id)?.city_name }}</h3>
+                      <p class="text-muted mb-0">
+                        {{ getWeatherForTab(tab.id)?.state_code }}, 
+                        {{ getWeatherForTab(tab.id)?.country_code }}
+                      </p>
+                    </div>
+                    <img 
+                      [src]="getWeatherIcon(getWeatherForTab(tab.id)!.weather.icon)" 
+                      alt="Weather icon"
+                      width="80"
+                      height="80">
+                  </div>
+
+                  <!-- Temperatura y descripción -->
+                  <div class="row mb-4">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                      <div class="display-1 fw-bold text-primary mb-2">
+                        {{ getWeatherForTab(tab.id)?.temp }}°
+                      </div>
+                      <p class="lead mb-0">{{ getWeatherForTab(tab.id)?.weather?.description }}</p>
+                    </div>
+                    
+                    <div class="col-md-6">
+                      <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                          <i class="bi bi-droplet-fill text-primary fs-4"></i>
+                          <span>Humedad: {{ getWeatherForTab(tab.id)?.rh }}%</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                          <i class="bi bi-wind text-info fs-4"></i>
+                          <span>Viento: {{ getWeatherForTab(tab.id)?.wind_spd }} m/s</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                          <i class="bi bi-cloud-fill text-secondary fs-4"></i>
+                          <span>Nubosidad: {{ getWeatherForTab(tab.id)?.clouds }}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Salida y puesta del sol -->
+                  <div class="bg-warning bg-opacity-25 rounded p-4 mb-4">
+                    <div class="row text-center">
+                      <div class="col-6">
+                        <i class="bi bi-sunrise text-warning fs-3"></i>
+                        <p class="mb-1 small text-muted">Amanecer</p>
+                        <p class="fw-bold mb-0">{{ getWeatherForTab(tab.id)?.sunrise }}</p>
+                      </div>
+                      <div class="col-6">
+                        <i class="bi bi-sunset text-danger fs-3"></i>
+                        <p class="mb-1 small text-muted">Atardecer</p>
+                        <p class="fw-bold mb-0">{{ getWeatherForTab(tab.id)?.sunset }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botón ver detalles -->
+                  <div class="text-center">
+                    <button 
+                      class="btn btn-primary btn-lg"
+                      (click)="viewDetails(tab.id)">
+                      <i class="bi bi-calendar3"></i>
+                      Ver Pronóstico de 5 Días
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <!-- Estado de carga -->
+          <ng-template #loadingWeather>
+            <app-loading height="300px"></app-loading>
+          </ng-template>
+          </div>
+        </div>
+      </app-tabs>
+    </div>
+
+    <!-- Contenido vacío -->
+    <ng-template #noLocations>
+      <div class="bg-white rounded text-center py-5 my-4">
+        <i class="bi bi-geo-alt display-1 text-muted opacity-25"></i>
+        <h3 class="text-muted">No hay ubicaciones agregadas</h3>
+        <p class="text-muted">Agrega un código postal arriba para comenzar</p>
+      </div>
+    </ng-template>
+
+    <!-- Configuración de Caché -->
+    <div class="row mt-5">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h3 class="h6 mb-1 mt-1">
+              <i class="bi bi-gear"></i> Configuración de Caché
+            </h3>
+          </div>
+          <div class="card-body">
+            <div>
+              <label for="cacheTTLRange" class="form-label">
+                Duración del Caché (horas): {{ cacheTTL() }}h
+              </label>
+              <input 
+                id="cacheTTLRange"
+                type="range" 
+                class="form-range" 
+                min="1" 
+                max="24" 
+                [value]="cacheTTL()"
+                (input)="cacheTTL.set(+$any($event.target).value)"
+                (change)="updateCacheTTL()">
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">1h</small>
+                <small class="text-muted">24h</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

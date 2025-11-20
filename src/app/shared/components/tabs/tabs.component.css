@@ -1,0 +1,115 @@
+/* Contenedor de tabs */
+.tabs-container {
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Contenedor con botones de scroll */
+.tabs-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+/* Botones de scroll */
+.scroll-button {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    color: var(--text-dark);
+    z-index: 10;
+}
+
+.scroll-button:hover:not(.disabled) {
+    background: var(--bg-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.scroll-button.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.scroll-button i {
+    font-size: 1.2rem;
+}
+
+/* Contenedor scrollable */
+.tabs-scroll-container {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 1px;
+}
+
+.tabs-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Nav tabs sin wrap */
+.nav-tabs {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Tabs inactivos */
+.nav-tabs .nav-link {
+    color: var(--bg-light);
+    border: 1px solid transparent;
+    transition: var(--transition-normal);
+    border-color: var(--border-color) var(--border-light) var(--border-light);
+    white-space: nowrap;
+    margin-right: 5px;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: var(--primary-light);
+}
+
+/* Tab activo */
+.nav-tabs .nav-link.active {
+    color: var(--text-dark);
+    background-color: var(--bg-white);
+    border-color: var(--border-color) var(--border-color) var(--bg-white);
+}
+
+/* Botón cerrar */
+.nav-link .btn-close {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    margin-left: var(--spacing-xs);
+    min-width: 24px;
+    min-height: 24px;
+}
+
+/* Contenido */
+.tab-content {
+    padding: var(--spacing-sm) 0;
+}
+
+@media (max-width: 768px) {
+    .scroll-button {
+        width: 28px;
+        height: 28px;
+    }
+
+    .scroll-button i {
+        font-size: 1rem;
+    }
+}

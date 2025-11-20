@@ -1,0 +1,164 @@
+<div class="weather-detail-container">
+  
+  <app-loading *ngIf="isLoading()" height="80vh"></app-loading>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error() && !isLoading()" class="container py-5">
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Error</h4>
+      <p>{{ error() }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+
+  <!-- Datos del clima -->
+  <div *ngIf="currentWeather() && !isLoading()" class="container py-4">
+    <!-- Header con botón volver -->
+    <div class="mb-4">
+      <button class="btn btn-outline-light" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Volver al Dashboard
+      </button>
+    </div>
+
+    <!-- Datos actuales -->
+    <div class="mb-4">
+      <div class="card border-0 shadow-lg rounded-4 bg-white bg-opacity-100">
+        <div class="card-body p-4">
+          <!-- Encabezado de la ubicación -->
+          <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold mb-2">
+              {{ currentWeather()?.city_name }}
+            </h1>
+            <p class="text-muted fs-5">
+              {{ currentWeather()?.state_code }}, {{ currentWeather()?.country_code }}
+            </p>
+          </div>
+
+          <!-- Información principal del clima -->
+          <div class="row align-items-center mb-4">
+            <div class="col-md-6 text-center">
+              <img 
+                [src]="getWeatherIcon(currentWeather()!.weather.icon)" 
+                alt="Weather icon"
+                class="weather-icon-large mb-3">
+              <h2 class="display-2 fw-bold mb-0">
+                {{ currentWeather()?.temp }}°C
+              </h2>
+              <p class="lead text-capitalize">
+                {{ currentWeather()?.weather?.description }}
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <div class="d-flex flex-column gap-3">
+                <div class="stat-item d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <i class="bi bi-droplet-fill text-primary fs-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Humedad</small>
+                    <p class="fw-bold mb-0 fs-5">{{ currentWeather()?.rh }}%</p>
+                  </div>
+                </div>
+
+                <div class="stat-item d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <i class="bi bi-wind text-info fs-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Velocidad del Viento</small>
+                    <p class="fw-bold mb-0 fs-5">{{ currentWeather()?.wind_spd }} m/s</p>
+                  </div>
+                </div>
+
+                <div class="stat-item d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <i class="bi bi-cloud-fill text-secondary fs-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Nubosidad</small>
+                    <p class="fw-bold mb-0 fs-5">{{ currentWeather()?.clouds }}%</p>
+                  </div>
+                </div>
+
+                <div class="stat-item d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <i class="bi bi-sunrise text-warning fs-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Amanecer</small>
+                    <p class="fw-bold mb-0 fs-5">{{ currentWeather()?.sunrise }}</p>
+                  </div>
+                </div>
+
+                <div class="stat-item d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <i class="bi bi-sunset text-danger fs-2"></i>
+                  <div>
+                    <small class="text-muted d-block">Atardecer</small>
+                    <p class="fw-bold mb-0 fs-5">{{ currentWeather()?.sunset }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pronóstico a 5 Días -->
+    <div class="mt-4">
+      <h3 class="text-white mb-4 fw-bold">
+        <i class="bi bi-calendar3"></i> Pronóstico de 5 Días
+      </h3>
+
+      <div class="row g-3">
+        <div class="col-lg col-md-4 col-sm-6" *ngFor="let day of forecast()">
+          <div class="forecast-card">
+            <div class="card h-100 border-0 shadow rounded-3 bg-white">
+              <div class="card-body text-center">
+                <!-- Día de la semana -->
+                <h4 class="h5 mb-3 text-capitalize">
+                  {{ getDayName(day.valid_date) }}
+                </h4>
+                <p class="text-muted small mb-3">
+                  {{ formatDate(day.valid_date) }}
+                </p>
+
+                <!-- Ícono del clima -->
+                <img 
+                  [src]="getWeatherIcon(day.weather.icon)" 
+                  alt="Weather icon"
+                  class="weather-icon-medium mb-3">
+
+                <!-- Temperaturas -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-center align-items-center gap-2 fs-5 fw-semibold">
+                    <span class="text-danger">
+                      <i class="bi bi-arrow-up-circle"></i>
+                      {{ day.max_temp }}°
+                    </span>
+                    <span class="text-primary">
+                      <i class="bi bi-arrow-down-circle"></i>
+                      {{ day.min_temp }}°
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Descripción -->
+                <p class="text-muted small text-capitalize mb-3">
+                  {{ day.weather.description }}
+                </p>
+
+                <!-- Detalles adicionales -->
+                <div class="d-flex justify-content-center gap-3 pt-2 border-top">
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-droplet-fill text-primary"></i>
+                    <small>{{ day.rh }}%</small>
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-cloud-rain-fill text-info"></i>
+                    <small>{{ day.pop }}%</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
+  <div class="container-fluid">
+    <div class="navbar-brand d-flex align-items-center gap-3" >
+      <div class="d-flex align-items-center">
+        <i class="bi bi-cloud-sun-fill me-2"></i>
+        <span class="brand-text">Pronósticos del Clima</span>
+      </div>
+      <div class="position-relative">
+        <i class="bi bi-geo-alt-fill fs-5"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem; padding: 0.2rem 0.4rem;">
+          {{ locationCount() }}
+          <span class="visually-hidden">ubicaciones guardadas</span>
+        </span>
+      </div>
+    </div>
+    
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/" 
+            routerLinkActive="active" 
+            [routerLinkActiveOptions]="{exact: true}"
+            aria-label="Ir al Dashboard">
+            <i class="bi bi-house-fill me-1"></i> Dashboard
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/products" 
+            routerLinkActive="active"
+            aria-label="Ir a Productos">
+            <i class="bi bi-box-seam me-1"></i> Productos
+          </a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</nav>

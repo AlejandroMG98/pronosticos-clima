@@ -1,0 +1,60 @@
+<!-- Contenedor de pestañas -->
+<div class="tabs-container">
+  
+  <div class="tabs-wrapper">
+    <!-- Botón scroll izquierda -->
+    <button 
+      class="scroll-button scroll-left"
+      type="button"
+      aria-label="Scroll izquierda"
+      (click)="scrollLeft()"
+      [disabled]="!canScrollLeft"
+      [class.disabled]="!canScrollLeft">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <!-- Contenedor scrollable de tabs -->
+    <div class="tabs-scroll-container" #tabsContainer (scroll)="onScroll()">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" *ngFor="let tab of tabs" role="presentation">
+          <button 
+            class="nav-link d-flex align-items-center gap-2"
+            [class.active]="isActive(tab.id)"
+            type="button"
+            role="tab"
+            [attr.aria-selected]="isActive(tab.id)"
+            (click)="selectTab(tab.id)">
+            
+            <!-- Título de la pestaña -->
+            <span>{{ tab.title }}</span>
+            
+            <!-- Botón cerrar -->
+            <button 
+              *ngIf="tab.closable"
+              type="button" 
+              class="btn-close btn-close-sm"
+              aria-label="Cerrar pestaña"
+              (click)="closeTab(tab.id, $event)">
+            </button>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Botón scroll derecha -->
+    <button 
+      class="scroll-button scroll-right"
+      type="button"
+      aria-label="Scroll derecha"
+      (click)="scrollRight()"
+      [disabled]="!canScrollRight"
+      [class.disabled]="!canScrollRight">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Contenido de las pestañas -->
+  <div class="tab-content">
+    <ng-content></ng-content>
+  </div>
+</div>
